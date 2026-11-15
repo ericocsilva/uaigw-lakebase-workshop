@@ -284,6 +284,7 @@ Then 🖱️ `guarded_chat` ▸ **Policies** ▸ **New policy** `block-codename`
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
+| Creating the Git folder fails: *Linked GitHub app credentials expired…* (or asks you to link GitHub) | An old or unfinished GitHub link on your user | Avatar ▸ **Settings ▸ Linked accounts** ▸ re-link GitHub (or remove the stale credential), then retry. The repo is public, so any working link is enough |
 | Chip **✗ ab_split**: *does not have USE SCHEMA* | Part 5 not done, or not propagated yet | Grant `USE SCHEMA` + `EXECUTE` on the schema to the app SP, wait 1 min, reload |
 | Chip ✗: *… does not exist* | Service name or schema typo | Names must be exactly `workspace.uaigw_workshop.ab_split` / `guarded_chat` (or run 🛟 `01_create_gateway_services`) |
 | **Lakebase: not connected** · *PGHOST not set* | No database resource on the app | App ▸ Edit ▸ resources ▸ + Add resource ▸ Database (Part 4.1), then **Deploy** |
