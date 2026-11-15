@@ -1,0 +1,14 @@
+# Databricks Apps runtime configuration.
+command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+
+env:
+  # Where the workshop's Unity Gateway model services live (catalog.schema).
+  - name: WORKSHOP_CATALOG
+    value: "workspace"
+  - name: WORKSHOP_SCHEMA
+    value: "uaigw_workshop"
+  # Postgres schema the app creates (and owns) inside Lakebase.
+  - name: APP_SCHEMA
+    value: "uaigw_app"
+  # PGHOST / PGDATABASE / PGUSER / PGPORT / PGSSLMODE are injected automatically
+  # when you attach the Lakebase resource to the app -- no secrets in this file.
