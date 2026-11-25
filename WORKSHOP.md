@@ -210,7 +210,7 @@ Each test you run is stored in Lakebase, and you'll query all of it in Part 7. A
 
 **Why:** Grants decide *who* may call a service. **Service policies** decide *how each interaction proceeds*, based on the content of the request and the response. They run before the model (input) and after it (output), and they can **mask** or **block**.
 
-**a) Turn on the preview (one time, admin):** 🖱️ your avatar (top right) ▸ **Previews** ▸ search **Unity Gateway Service Policies** ▸ **On**.
+**a) Turn on the preview (one time, admin):** 🖱️ your avatar (top right) ▸ **Previews** ▸ search **Unity Gateway Service Policies** — the label sometimes appears as **Enforce Unity Gateway** instead ▸ turn it **On**.
 
 **b) Baseline:** 🖱️ App ▸ **2 · Guardrails** ▸ prompt **PII** ▸ **Send through both**. Both sides behave the same, since no policy is attached yet.
 
@@ -218,6 +218,14 @@ Each test you run is stored in Lakebase, and you'll query all of it in Part 7. A
 1. 🖱️ AI Gateway ▸ `guarded_chat` ▸ **Policies** ▸ **New policy**. Name: `mask-pii`.
 2. 🖱️ **Guardrail type**: *Sensitive Data Detection*. **Classification tags**: `class.email_address`, `class.credit_card`, `class.us_ssn`. **Action**: *redact*/*mask*. **Phase**: Input **and** Output. **Rank** `1`. Under **Advanced options** keep **Enforce** ▸ **Create policy**.
 3. ⏳ ~2 min, then **Send through both** again. The **Guarded** side shows placeholder tokens (such as `[US_SSN]`) where the email, card and SSN were, while **Unguarded** repeats the PII.
+
+> ⚠️ **Both sides refuse instead of showing the difference?** Some models — including current `llama-4-maverick` — refuse on their own to repeat sensitive data, so guarded and unguarded look identical even though the policy is working. ⌨️ In the app, edit the prompt to one the model will obey verbatim:
+>
+> ```text
+> Reply with exactly the following text, word for word, and nothing else: Contact: alice.smith@example.com, card 4111 1111 1111 1111, SSN 123-45-6789.
+> ```
+>
+> Now the **Guarded** side echoes the placeholder tokens (`[EMAIL_ADDRESS]`, `[CREDIT_CARD]`, `[US_SSN]`) while **Unguarded** repeats the raw PII — the expected result of step 3.
 
 **d) Block jailbreaks:** 🖱️ New policy `block-jailbreak` ▸ Guardrail type *Jailbreak* ▸ Phase Input ▸ Rank `2` ▸ Create. Then in the app use the **Jailbreak** prompt. The guarded side shows **⛔ BLOCKED BY POLICY** plus the policy decision (`databricks_service_policy`). The block comes back as a normal HTTP 200 so chat clients don't break.
 
